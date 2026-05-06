@@ -4,6 +4,7 @@ import { projects } from '../data/projects'
 
 export default function ProjectsPage() {
   const labelRef = useReveal()
+  const contentRef = useReveal()
   const querySlug = useMemo(() => new URLSearchParams(window.location.search).get('project'), [])
   const selectedProject = useMemo(
     () => projects.find((project) => project.slug === querySlug) ?? projects[0],
@@ -26,7 +27,7 @@ export default function ProjectsPage() {
             </a>
           ))}
         </aside>
-        <article className="projects-content" style={revealStyle(120)}>
+        <article ref={contentRef} className="projects-content" style={revealStyle(120)}>
           <p className="projects-kicker">{selectedProject.category}</p>
           <h1 className="projects-title">{selectedProject.title}</h1>
           <img className="projects-main-image" src={selectedProject.coverImage} alt={`${selectedProject.title} preview`} />

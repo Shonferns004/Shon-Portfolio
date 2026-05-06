@@ -5,31 +5,47 @@ const badges = ['Available', 'NDA Ready', 'On-time Delivery']
 const stack = ['React', 'Node.js', 'React Native', 'Supabase', 'Python', 'Express', 'MongoDB', 'TailwindCSS', 'HTML5']
 
 export default function Hero() {
-  const [particles, setParticles] = useState([])
+  const [pointer, setPointer] = useState({ x: 0, y: 0 })
   const r1 = useReveal(), r2 = useReveal(), r3 = useReveal(), r4 = useReveal()
   const r5 = useReveal(), r6 = useReveal()
 
-  const addParticle = (event) => {
+  const particleField = [
+    { x: 8, y: 18, size: 5, depth: 0.45 },
+    { x: 18, y: 72, size: 7, depth: 0.9 },
+    { x: 28, y: 36, size: 6, depth: 0.75 },
+    { x: 42, y: 22, size: 4, depth: 0.5 },
+    { x: 56, y: 80, size: 8, depth: 1.1 },
+    { x: 64, y: 48, size: 5, depth: 0.65 },
+    { x: 73, y: 14, size: 6, depth: 0.8 },
+    { x: 82, y: 64, size: 7, depth: 1.0 },
+    { x: 92, y: 34, size: 5, depth: 0.6 },
+  ]
+
+  const onMouseMove = (event) => {
     if (window.matchMedia('(pointer: coarse)').matches) return
     const rect = event.currentTarget.getBoundingClientRect()
-    const particle = {
-      id: `${Date.now()}-${Math.random()}`,
-      x: event.clientX - rect.left,
-      y: event.clientY - rect.top,
-    }
-    setParticles((prev) => [...prev.slice(-22), particle])
-    window.setTimeout(() => {
-      setParticles((prev) => prev.filter((item) => item.id !== particle.id))
-    }, 700)
+    const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2
+    const y = ((event.clientY - rect.top) / rect.height - 0.5) * 2
+    setPointer({ x, y })
   }
 
   return (
-    <section id="hero" className="hero-section" style={heroStyle} onMouseMove={addParticle}>
+    <section id="hero" className="hero-section" style={heroStyle} onMouseMove={onMouseMove}>
       <div style={gridBg} />
       <div style={glowStyle} />
       <div className="hero-particles" aria-hidden>
-        {particles.map((particle) => (
-          <span key={particle.id} className="hero-particle" style={{ left: particle.x, top: particle.y }} />
+        {particleField.map((particle, index) => (
+          <span
+            key={`${particle.x}-${particle.y}-${index}`}
+            className="hero-particle"
+            style={{
+              left: `${particle.x}%`,
+              top: `${particle.y}%`,
+              width: particle.size,
+              height: particle.size,
+              transform: `translate3d(${pointer.x * particle.depth * 14}px, ${pointer.y * particle.depth * 14}px, 0)`,
+            }}
+          />
         ))}
       </div>
       <div style={{ position: 'relative', zIndex: 1 }}>
