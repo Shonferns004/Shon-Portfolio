@@ -14,7 +14,7 @@ export default function About() {
   const btnRef = useReveal()
 
   return (
-    <section id="about" style={{ padding: '100px 48px', display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 80, alignItems: 'start' }}>
+    <section id="about" className="about-section" style={{ padding: '100px 48px', display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 80, alignItems: 'start' }}>
       <div>
         <div ref={labelRef} style={revealStyle(0)} className="section-label">Who Am I</div>
         <h2 ref={headRef} style={{ ...revealStyle(80), fontFamily: 'var(--font-display)', fontSize: 'clamp(60px, 8vw, 100px)', lineHeight: 0.9, letterSpacing: '0.02em', color: 'var(--text)', marginBottom: 32 }}>
@@ -26,7 +26,7 @@ export default function About() {
         <div ref={skillsRef} style={{ ...revealStyle(220), display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 40 }}>
           {skills.map(s => <SkillChip key={s}>{s}</SkillChip>)}
         </div>
-        <div ref={statsRef} style={{ ...revealStyle(280), display: 'flex', gap: 48 }}>
+        <div className="about-stats" ref={statsRef} style={{ ...revealStyle(280), display: 'flex', gap: 48 }}>
           {stats.map(s => (
             <div key={s.label}>
               <div style={{ fontFamily: 'var(--font-display)', fontSize: 56, lineHeight: 1, color: 'var(--text)' }}>{s.num}</div>

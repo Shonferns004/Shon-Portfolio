@@ -4,7 +4,7 @@ const links = ['GITHUB', 'IG', 'LINKEDIN']
 
 export default function Footer() {
   return (
-    <footer style={{ padding: '28px 48px', borderTop: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--muted)', letterSpacing: '0.06em' }}>
+    <footer className="site-footer" style={{ padding: '28px 48px', borderTop: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--muted)', letterSpacing: '0.06em' }}>
       <span>©2025 Shon.Dev</span>
       <div style={{ display: 'flex', gap: 24 }}>
         {links.map(l => <FooterLink key={l}>{l}</FooterLink>)}

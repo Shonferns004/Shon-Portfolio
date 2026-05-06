@@ -1,4 +1,5 @@
 import './styles/globals.css'
+import { useEffect, useState } from 'react'
 import Cursor from './components/Cursor'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -11,22 +12,47 @@ import Quote from './components/Quote'
 import FAQ from './components/FAQ'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
+import ProjectsPage from './components/ProjectsPage'
+
+function HomePage() {
+  return (
+    <>
+      <Ticker />
+      <Services />
+      <Works />
+      <About />
+      <Timeline />
+      <Quote />
+      <FAQ />
+      <Contact />
+    </>
+  )
+}
 
 export default function App() {
+  const [pathname, setPathname] = useState(window.location.pathname)
+
+  useEffect(() => {
+    const onPop = () => setPathname(window.location.pathname)
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
+  }, [])
+
+  const isProjectsPage = pathname === '/projects'
+
   return (
     <>
       <Cursor />
-      <Navbar />
+      <Navbar isProjectsPage={isProjectsPage} />
       <main>
-        <Hero />
-        <Ticker />
-        <Services />
-        <Works />
-        <About />
-        <Timeline />
-        <Quote />
-        <FAQ />
-        <Contact />
+        {isProjectsPage ? (
+          <ProjectsPage />
+        ) : (
+          <>
+            <Hero />
+            <HomePage />
+          </>
+        )}
       </main>
       <Footer />
     </>

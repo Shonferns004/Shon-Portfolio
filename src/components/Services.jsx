@@ -13,9 +13,9 @@ export default function Services() {
   const gridRef = useReveal()
 
   return (
-    <section id="services" style={{ padding: '100px 48px' }}>
+    <section id="services" className="services-section" style={{ padding: '100px 48px' }}>
       <div ref={labelRef} style={{ ...revealStyle(0) }} className="section-label">Services</div>
-      <div ref={gridRef} style={{ ...revealStyle(100), display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', border: '1px solid var(--border)' }}>
+      <div className="services-grid" ref={gridRef} style={{ ...revealStyle(100), display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', border: '1px solid var(--border)' }}>
         {services.map((s, i) => <ServiceItem key={i} {...s} last={i === services.length - 1} />)}
       </div>
     </section>
@@ -26,7 +26,7 @@ function ServiceItem({ num, name, sub, tags, last }) {
   const [hov, setHov] = useState(false)
   return (
     <div
-      className="hoverable"
+      className="service-item hoverable"
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{

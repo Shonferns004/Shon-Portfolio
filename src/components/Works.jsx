@@ -1,12 +1,6 @@
 import { useState } from 'react'
 import { useReveal, revealStyle } from './useReveal'
-
-const works = [
-  { title: 'AGENCIFY', tags: ['React', 'Node.js'], wide: false },
-  { title: 'ONLY BILLS', tags: ['React', 'Firebase'], wide: false },
-  { title: 'CANDREVA', tags: ['UI/UX', 'Framer'], wide: false },
-  { title: 'TESLA REDESIGN', tags: ['UI/UX', 'Design'], wide: false },
-]
+import { projects } from '../data/projects'
 
 export default function Works() {
   const labelRef = useReveal()
@@ -14,16 +8,25 @@ export default function Works() {
   const bannerRef = useReveal()
 
   return (
-    <section id="works" style={{ padding: '100px 48px', background: 'var(--bg2)' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 60 }}>
+    <section id="works" className="works-section" style={{ padding: '100px 48px', background: 'var(--bg2)' }}>
+      <div className="works-head" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 60 }}>
         <div ref={labelRef} style={revealStyle(0)} className="section-label">Featured Works</div>
         <p ref={descRef} style={{ ...revealStyle(100), maxWidth: 360, fontSize: 14, color: 'var(--muted)', lineHeight: 1.7 }}>
           A curated selection of projects that reflect a commitment to simplicity and purposeful design.
         </p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
-        {works.map((w, i) => <WorkCard key={i} {...w} delay={i * 80} />)}
+      <div className="works-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
+        {projects.map((project, i) => (
+          <WorkCard
+            key={project.slug}
+            title={project.title}
+            slug={project.slug}
+            tags={project.tags}
+            coverImage={project.coverImage}
+            delay={i * 80}
+          />
+        ))}
       </div>
 
       <div ref={bannerRef} style={{ ...revealStyle(200), marginTop: 2, border: '1px solid var(--border)', background: 'var(--bg3)', padding: '32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -59,26 +62,27 @@ function HireLink() {
   )
 }
 
-function WorkCard({ title, tags, delay }) {
+function WorkCard({ title, tags, delay, slug, coverImage }) {
   const [hov, setHov] = useState(false)
   const ref = useReveal()
 
   return (
-    <div
+    <a
+      href={`/projects?project=${slug}`}
       ref={ref}
       className="hoverable"
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
-      style={{ ...revealStyle(delay), position: 'relative', overflow: 'hidden', background: 'var(--bg3)', cursor: 'pointer', aspectRatio: '16/10' }}
+      style={{ ...revealStyle(delay), position: 'relative', overflow: 'hidden', background: 'var(--bg3)', cursor: 'pointer', aspectRatio: '16/10', display: 'block' }}
     >
-      {/* placeholder bg */}
       <div style={{
         position: 'absolute', inset: 0,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.18), rgba(0,0,0,0.18)), url(${coverImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
         transition: 'transform 0.4s ease',
         transform: hov ? 'scale(1.04)' : 'scale(1)',
       }}>
-        <span style={{ fontFamily: 'var(--font-display)', fontSize: 48, color: 'rgba(240,236,227,0.06)', letterSpacing: '0.05em' }}>{title}</span>
       </div>
       {/* overlay */}
       <div style={{
@@ -96,6 +100,6 @@ function WorkCard({ title, tags, delay }) {
         </div>
         <div style={{ fontFamily: 'var(--font-display)', fontSize: 32, color: 'var(--text)', letterSpacing: '0.04em' }}>{title}</div>
       </div>
-    </div>
+    </a>
   )
 }

@@ -5,7 +5,7 @@ export default function Contact() {
   const r1 = useReveal(), r2 = useReveal(), r3 = useReveal(), r4 = useReveal()
 
   return (
-    <section id="contact" style={{ padding: '100px 48px', background: 'var(--bg2)', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+    <section id="contact" className="contact-section" style={{ padding: '100px 48px', background: 'var(--bg2)', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
       <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, rgba(200,240,96,0.05) 0%, transparent 70%)', pointerEvents: 'none' }} />
       <p ref={r1} style={{ ...revealStyle(0), fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--accent)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 24, position: 'relative' }}>
         Ready to collaborate?

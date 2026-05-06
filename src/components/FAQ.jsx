@@ -14,7 +14,7 @@ export default function FAQ() {
   const labelRef = useReveal()
 
   return (
-    <section id="faq" style={{ padding: '100px 48px', maxWidth: 900 }}>
+    <section id="faq" className="faq-section" style={{ padding: '100px 48px', maxWidth: 900 }}>
       <div ref={labelRef} style={revealStyle(0)} className="section-label">FAQ</div>
       {faqs.map((f, i) => (
         <FAQItem key={i} num={String(i + 1).padStart(2, '0')} q={f.q} a={f.a} open={open === i} onToggle={() => setOpen(open === i ? -1 : i)} />

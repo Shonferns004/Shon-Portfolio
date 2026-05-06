@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react'
 
-export default function Navbar() {
+export default function Navbar({ isProjectsPage }) {
   const [time, setTime] = useState('')
 
   useEffect(() => {
     const tick = () => {
       const t = new Date().toLocaleTimeString('en-IN', {
-        hour: '2-digit', minute: '2-digit',
-        hour12: false, timeZone: 'Asia/Kolkata'
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+        timeZone: 'Asia/Kolkata',
       })
-      setTime(t + ' IST')
+      setTime(`${t} IST`)
     }
     tick()
     const id = setInterval(tick, 1000)
@@ -17,20 +19,22 @@ export default function Navbar() {
   }, [])
 
   return (
-    <nav style={navStyle}>
-      <a href="#hero" style={logoStyle}>
+    <nav className="site-nav" style={navStyle}>
+      <a href={isProjectsPage ? '/' : '#hero'} style={logoStyle}>
         SHON<span style={{ color: 'var(--accent)' }}>.</span>
       </a>
-      <div style={metaStyle}>
+      <div className="site-nav-meta" style={metaStyle}>
         <span>Mumbai, India</span>
         <span style={{ color: 'var(--text)' }}>{time}</span>
         <span>shawnferns004@gmail.com</span>
       </div>
-      <a href="#contact" style={ctaStyle}
-        onMouseEnter={e => { e.currentTarget.style.background = 'var(--accent)'; e.currentTarget.style.color = '#0a0a0a' }}
-        onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--accent)' }}
+      <a
+        href={isProjectsPage ? '/' : '/projects'}
+        style={ctaStyle}
+        onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--accent)'; e.currentTarget.style.color = '#0a0a0a' }}
+        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--accent)' }}
       >
-        Contact Now →
+        {isProjectsPage ? 'Back Home ->' : 'Projects ->'}
       </a>
     </nav>
   )

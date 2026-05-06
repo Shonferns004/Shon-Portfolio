@@ -28,7 +28,7 @@ export default function Timeline() {
   const labelRef = useReveal()
 
   return (
-    <section id="timeline" style={{ padding: '100px 48px', background: 'var(--bg2)' }}>
+    <section id="timeline" className="timeline-section" style={{ padding: '100px 48px', background: 'var(--bg2)' }}>
       <div ref={labelRef} style={revealStyle(0)} className="section-label">Education &amp; Experience</div>
       {timeline.map((group, i) => (
         <TimelineGroup key={i} {...group} delay={i * 80} />
@@ -40,7 +40,7 @@ export default function Timeline() {
 function TimelineGroup({ year, entries, delay }) {
   const ref = useReveal()
   return (
-    <div ref={ref} style={{ ...revealStyle(delay), display: 'grid', gridTemplateColumns: '200px 1fr', marginBottom: 0 }}>
+    <div className="timeline-group" ref={ref} style={{ ...revealStyle(delay), display: 'grid', gridTemplateColumns: '200px 1fr', marginBottom: 0 }}>
       <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--accent)', letterSpacing: '0.1em', paddingTop: 20, borderTop: '1px solid var(--border)', position: 'sticky', top: 100, alignSelf: 'start' }}>
         {year}
       </div>

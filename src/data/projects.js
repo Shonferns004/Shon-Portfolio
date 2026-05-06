@@ -1,0 +1,71 @@
+export const projects = [
+  {
+    slug: 'agencify',
+    title: 'AGENCIFY',
+    category: 'Agency Platform',
+    tags: ['React', 'Node.js', 'MongoDB'],
+    coverImage: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1400&q=80',
+    summary: 'A lead and client management dashboard for creative agencies with role-based access, deal tracking, and delivery workflows.',
+    detailedExplanation: [
+      'Agencify was designed to solve fragmented operations across sales, account management, and production. Teams previously handled these workflows in disconnected tools, making handoff and accountability difficult.',
+      'The platform centralizes lead capture, qualification, proposal tracking, and post-sale execution into one dashboard. Role-specific views let business, project, and operations teams focus on the data that matters to them.',
+      'The backend is structured with modular APIs for clients, proposals, tasks, and billing metadata. This architecture supports easier scaling and cleaner integration with future automation and reporting modules.',
+    ],
+    highlights: [
+      'Built a responsive admin workspace for pipeline, tasks, and project handoff.',
+      'Added modular API endpoints for clients, proposals, and billing metadata.',
+      'Improved UX with clear status signals and conversion-oriented card flows.',
+    ],
+    gallery: [
+      'https://images.unsplash.com/photo-1551281044-8b57a8f0fcb2?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1517292987719-0369a794ec0f?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1400&q=80',
+    ],
+  },
+  {
+    slug: 'only-bills',
+    title: 'ONLY BILLS',
+    category: 'Finance Tracker',
+    tags: ['React', 'Firebase'],
+    coverImage: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1400&q=80',
+    summary: 'A lightweight billing manager to track due dates, recurring invoices, and payment confirmations with realtime updates.',
+    detailedExplanation: [
+      'Only Bills focuses on one problem: helping freelancers and small teams stay ahead of revenue leakage caused by late or missed payments.',
+      'The product organizes invoices by status, due timeline, and customer history. A minimal layout keeps key actions fast: create invoice, mark paid, and follow up.',
+      'Realtime synchronization with Firebase enables instant updates across devices, while the data model is prepared for reminders, analytics, and accounting integrations.',
+    ],
+    highlights: [
+      'Integrated realtime sync for due status updates across devices.',
+      'Created clean invoice timelines with fast month and client filters.',
+      'Added notification-ready data structure for upcoming reminders.',
+    ],
+    gallery: [
+      'https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1400&q=80',
+    ],
+  },
+  {
+    slug: 'candreva',
+    title: 'CANDREVA',
+    category: 'Brand Website',
+    tags: ['UI/UX', 'Framer'],
+    coverImage: 'https://images.unsplash.com/photo-1497215842964-222b430dc094?auto=format&fit=crop&w=1400&q=80',
+    summary: 'A conversion-focused brand website designed around visual storytelling, service clarity, and lead generation.',
+    detailedExplanation: [
+      'Candreva needed a web presence that looked premium while remaining operationally clear for users ready to inquire or book consultations.',
+      'The solution combined narrative sections, focused service cards, and conversion touchpoints distributed across the page to reduce drop-off.',
+      'The design system emphasized consistency in type rhythm, section spacing, and interaction behavior so future pages can be launched rapidly with the same visual language.',
+    ],
+    highlights: [
+      'Designed a modular landing layout with reusable section patterns.',
+      'Improved mobile readability through intentional spacing and typography scaling.',
+      'Structured interaction points to support faster consultation bookings.',
+    ],
+    gallery: [
+      'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?auto=format&fit=crop&w=1400&q=80',
+    ],
+  },
+]

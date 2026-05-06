@@ -39,7 +39,7 @@ export default function Cursor() {
 
   return (
     <>
-      <div ref={dotRef} style={dotStyle} />
+      <div ref={dotRef} style={dotStyle} className="cursor-dot" />
       <div ref={ringRef} style={ringStyle} className="cursor-ring" />
       <style>{`
         .cursor-ring { transition: width 0.25s, height 0.25s, border-color 0.25s; }

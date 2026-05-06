@@ -1,54 +1,70 @@
+import { useState } from 'react'
 import { useReveal, revealStyle } from './useReveal'
 
 const badges = ['Available', 'NDA Ready', 'On-time Delivery']
-const stack = ['React', 'Node.js', 'React Native', 'Supabase', 'Python', 'Express', "MongoDB", "TailwindCSS", "Html5"]
+const stack = ['React', 'Node.js', 'React Native', 'Supabase', 'Python', 'Express', 'MongoDB', 'TailwindCSS', 'HTML5']
 
 export default function Hero() {
+  const [particles, setParticles] = useState([])
   const r1 = useReveal(), r2 = useReveal(), r3 = useReveal(), r4 = useReveal()
   const r5 = useReveal(), r6 = useReveal()
 
+  const addParticle = (event) => {
+    if (window.matchMedia('(pointer: coarse)').matches) return
+    const rect = event.currentTarget.getBoundingClientRect()
+    const particle = {
+      id: `${Date.now()}-${Math.random()}`,
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top,
+    }
+    setParticles((prev) => [...prev.slice(-22), particle])
+    window.setTimeout(() => {
+      setParticles((prev) => prev.filter((item) => item.id !== particle.id))
+    }, 700)
+  }
+
   return (
-    <section id="hero" style={heroStyle}>
+    <section id="hero" className="hero-section" style={heroStyle} onMouseMove={addParticle}>
       <div style={gridBg} />
       <div style={glowStyle} />
-
-      {/* Left */}
+      <div className="hero-particles" aria-hidden>
+        {particles.map((particle) => (
+          <span key={particle.id} className="hero-particle" style={{ left: particle.x, top: particle.y }} />
+        ))}
+      </div>
       <div style={{ position: 'relative', zIndex: 1 }}>
         <div ref={r1} style={{ ...tagStyle, ...revealStyle(0) }}>
           <span style={dotStyle} />
           Available for new projects
         </div>
-        <span ref={r2} style={{ ...revealStyle(100), display: 'block', fontFamily: 'var(--font-display)', fontSize: 'clamp(90px, 13vw, 160px)', lineHeight: 0.88, letterSpacing: '0.01em', color: 'var(--text)' }}>
+        <span ref={r2} style={{ ...revealStyle(100), display: 'block', fontFamily: 'var(--font-display)', fontSize: 'clamp(72px, 13vw, 160px)', lineHeight: 0.88, letterSpacing: '0.01em', color: 'var(--text)' }}>
           SHON
         </span>
-        <span ref={r3} style={{ ...revealStyle(180), display: 'block', fontFamily: 'var(--font-display)', fontSize: 'clamp(90px, 13vw, 160px)', lineHeight: 0.88, letterSpacing: '0.01em', color: 'var(--accent)', marginBottom: 32 }}>
+        <span ref={r3} style={{ ...revealStyle(180), display: 'block', fontFamily: 'var(--font-display)', fontSize: 'clamp(72px, 13vw, 160px)', lineHeight: 0.88, letterSpacing: '0.01em', color: 'var(--accent)', marginBottom: 32 }}>
           .DEV
         </span>
         <p ref={r4} style={{ ...revealStyle(240), fontFamily: 'var(--font-mono)', fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 16 }}>
-          Web &amp; App Developer
+          Web & App Developer
         </p>
         <p ref={r4} style={{ ...revealStyle(300), fontSize: 15, color: 'var(--muted)', maxWidth: 400, lineHeight: 1.75 }}>
           I love creating captivating and functional interfaces that evoke emotions and establish a connection between brand and user.
         </p>
       </div>
-
-      {/* Right */}
       <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'flex-end' }}>
         <div ref={r5} style={{ ...revealStyle(100), ...cardStyle }}>
           <div style={cardLabel}>Status</div>
-          <div style={cardValue}>Open to freelance &amp; full-time roles</div>
+          <div style={cardValue}>Open to freelance & full-time roles</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 12 }}>
-            {badges.map(b => <Badge key={b} active={b === 'Available'}>{b}</Badge>)}
+            {badges.map((b) => <Badge key={b} active={b === 'Available'}>{b}</Badge>)}
           </div>
         </div>
         <div ref={r6} style={{ ...revealStyle(200), ...cardStyle }}>
           <div style={cardLabel}>Core Stack</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 8 }}>
-            {stack.map(s => <Badge key={s}>{s}</Badge>)}
+            {stack.map((s) => <Badge key={s}>{s}</Badge>)}
           </div>
         </div>
       </div>
-
       <style>{`
         @keyframes pulse {
           0%,100% { opacity:1; transform:scale(1); }
@@ -78,8 +94,6 @@ function Badge({ children, active }) {
     >{children}</span>
   )
 }
-
-import { useState } from 'react'
 
 const heroStyle = {
   minHeight: '100vh',
