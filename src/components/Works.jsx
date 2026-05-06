@@ -65,6 +65,8 @@ function HireLink() {
 function WorkCard({ title, tags, delay, slug, coverImage }) {
   const [hov, setHov] = useState(false)
   const ref = useReveal()
+  const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches
+  const showOverlay = hov || isCoarsePointer
 
   return (
     <a
@@ -90,7 +92,7 @@ function WorkCard({ title, tags, delay, slug, coverImage }) {
         display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
         padding: '28px 32px',
         background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%)',
-        transform: hov ? 'translateY(0)' : 'translateY(100%)',
+        transform: showOverlay ? 'translateY(0)' : 'translateY(100%)',
         transition: 'transform 0.35s cubic-bezier(0.4,0,0.2,1)',
       }}>
         <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>

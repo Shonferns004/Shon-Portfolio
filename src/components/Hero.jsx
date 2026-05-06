@@ -22,15 +22,22 @@ export default function Hero() {
   ]
 
   const onMouseMove = (event) => {
-    if (window.matchMedia('(pointer: coarse)').matches) return
     const rect = event.currentTarget.getBoundingClientRect()
     const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2
     const y = ((event.clientY - rect.top) / rect.height - 0.5) * 2
     setPointer({ x, y })
   }
+  const onTouchMove = (event) => {
+    const touch = event.touches[0]
+    if (!touch) return
+    const rect = event.currentTarget.getBoundingClientRect()
+    const x = ((touch.clientX - rect.left) / rect.width - 0.5) * 2
+    const y = ((touch.clientY - rect.top) / rect.height - 0.5) * 2
+    setPointer({ x, y })
+  }
 
   return (
-    <section id="hero" className="hero-section" style={heroStyle} onMouseMove={onMouseMove}>
+    <section id="hero" className="hero-section" style={heroStyle} onMouseMove={onMouseMove} onTouchStart={onTouchMove} onTouchMove={onTouchMove}>
       <div style={gridBg} />
       <div style={glowStyle} />
       <div className="hero-particles" aria-hidden>
