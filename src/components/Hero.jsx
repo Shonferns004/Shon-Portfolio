@@ -1,0 +1,136 @@
+import { useReveal, revealStyle } from './useReveal'
+
+const badges = ['Available', 'NDA Ready', 'On-time Delivery']
+const stack = ['React', 'Node.js', 'React Native', 'Supabase', 'Python', 'Express', "MongoDB", "TailwindCSS", "Html5"]
+
+export default function Hero() {
+  const r1 = useReveal(), r2 = useReveal(), r3 = useReveal(), r4 = useReveal()
+  const r5 = useReveal(), r6 = useReveal()
+
+  return (
+    <section id="hero" style={heroStyle}>
+      <div style={gridBg} />
+      <div style={glowStyle} />
+
+      {/* Left */}
+      <div style={{ position: 'relative', zIndex: 1 }}>
+        <div ref={r1} style={{ ...tagStyle, ...revealStyle(0) }}>
+          <span style={dotStyle} />
+          Available for new projects
+        </div>
+        <span ref={r2} style={{ ...revealStyle(100), display: 'block', fontFamily: 'var(--font-display)', fontSize: 'clamp(90px, 13vw, 160px)', lineHeight: 0.88, letterSpacing: '0.01em', color: 'var(--text)' }}>
+          SHON
+        </span>
+        <span ref={r3} style={{ ...revealStyle(180), display: 'block', fontFamily: 'var(--font-display)', fontSize: 'clamp(90px, 13vw, 160px)', lineHeight: 0.88, letterSpacing: '0.01em', color: 'var(--accent)', marginBottom: 32 }}>
+          .DEV
+        </span>
+        <p ref={r4} style={{ ...revealStyle(240), fontFamily: 'var(--font-mono)', fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 16 }}>
+          Web &amp; App Developer
+        </p>
+        <p ref={r4} style={{ ...revealStyle(300), fontSize: 15, color: 'var(--muted)', maxWidth: 400, lineHeight: 1.75 }}>
+          I love creating captivating and functional interfaces that evoke emotions and establish a connection between brand and user.
+        </p>
+      </div>
+
+      {/* Right */}
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'flex-end' }}>
+        <div ref={r5} style={{ ...revealStyle(100), ...cardStyle }}>
+          <div style={cardLabel}>Status</div>
+          <div style={cardValue}>Open to freelance &amp; full-time roles</div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 12 }}>
+            {badges.map(b => <Badge key={b} active={b === 'Available'}>{b}</Badge>)}
+          </div>
+        </div>
+        <div ref={r6} style={{ ...revealStyle(200), ...cardStyle }}>
+          <div style={cardLabel}>Core Stack</div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 8 }}>
+            {stack.map(s => <Badge key={s}>{s}</Badge>)}
+          </div>
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes pulse {
+          0%,100% { opacity:1; transform:scale(1); }
+          50% { opacity:0.4; transform:scale(0.8); }
+        }
+      `}</style>
+    </section>
+  )
+}
+
+function Badge({ children, active }) {
+  const [hov, setHov] = useState(false)
+  return (
+    <span
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        padding: '5px 12px',
+        border: `1px solid ${active ? 'var(--accent)' : hov ? 'var(--border-hover)' : 'var(--border)'}`,
+        fontFamily: 'var(--font-mono)',
+        fontSize: 10,
+        color: active ? 'var(--accent)' : hov ? 'var(--text)' : 'var(--muted)',
+        letterSpacing: '0.08em',
+        textTransform: 'uppercase',
+        transition: 'border-color 0.2s, color 0.2s',
+      }}
+    >{children}</span>
+  )
+}
+
+import { useState } from 'react'
+
+const heroStyle = {
+  minHeight: '100vh',
+  padding: '140px 48px 80px',
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  alignItems: 'center',
+  gap: 60,
+  position: 'relative',
+  overflow: 'hidden',
+}
+const gridBg = {
+  position: 'absolute', inset: 0,
+  backgroundImage: 'linear-gradient(rgba(200,240,96,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(200,240,96,0.03) 1px, transparent 1px)',
+  backgroundSize: '60px 60px',
+  pointerEvents: 'none',
+}
+const glowStyle = {
+  position: 'absolute',
+  width: 600, height: 600,
+  background: 'radial-gradient(circle, rgba(200,240,96,0.06) 0%, transparent 70%)',
+  top: '50%', left: '30%',
+  transform: 'translate(-50%, -50%)',
+  pointerEvents: 'none',
+}
+const tagStyle = {
+  display: 'inline-flex', alignItems: 'center', gap: 8,
+  border: '1px solid var(--border-hover)',
+  padding: '7px 14px',
+  fontFamily: 'var(--font-mono)',
+  fontSize: 11,
+  color: 'var(--muted)',
+  letterSpacing: '0.08em',
+  marginBottom: 32,
+}
+const dotStyle = {
+  width: 6, height: 6,
+  borderRadius: '50%',
+  background: 'var(--accent)',
+  display: 'inline-block',
+  animation: 'pulse 2s infinite',
+}
+const cardStyle = {
+  width: '100%', maxWidth: 420,
+  border: '1px solid var(--border)',
+  background: 'var(--bg2)',
+  padding: '28px 32px',
+}
+const cardLabel = {
+  fontFamily: 'var(--font-mono)', fontSize: 10,
+  color: 'var(--muted)', letterSpacing: '0.1em',
+  textTransform: 'uppercase', marginBottom: 8,
+}
+const cardValue = { fontSize: 15, color: 'var(--text)', fontWeight: 500 }
