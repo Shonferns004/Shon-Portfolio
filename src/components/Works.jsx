@@ -23,28 +23,35 @@ export default function Works() {
 
     const visuals = container.querySelectorAll('.project-visual')
 
-    const onMove = (e, visual) => {
-      const rect = visual.getBoundingClientRect()
-      const x = e.clientX - rect.left - rect.width / 2
-      const y = e.clientY - rect.top - rect.height / 2
-      const img = visual.querySelector('.project-img')
-      if (img) img.style.transform = `scale(1.04) translate(${x * 0.04}px, ${y * 0.04}px)`
+    // Store handlers in a Map so removeEventListener works correctly
+    const handlers = new Map()
+
+    const createHandlers = (visual) => {
+      const onMove = (e) => {
+        const rect = visual.getBoundingClientRect()
+        const x = e.clientX - rect.left - rect.width / 2
+        const y = e.clientY - rect.top - rect.height / 2
+        const img = visual.querySelector('.project-img')
+        if (img) img.style.transform = `scale(1.04) translate(${x * 0.04}px, ${y * 0.04}px)`
+      }
+      const onLeave = () => {
+        const img = visual.querySelector('.project-img')
+        if (img) img.style.transform = ''
+      }
+      handlers.set(visual, { onMove, onLeave })
+      visual.addEventListener('mousemove', onMove)
+      visual.addEventListener('mouseleave', onLeave)
     }
 
-    const onLeave = (e) => {
-      const img = e.currentTarget.querySelector('.project-img')
-      if (img) img.style.transform = ''
-    }
-
-    visuals.forEach((v) => {
-      v.addEventListener('mousemove', (e) => onMove(e, v))
-      v.addEventListener('mouseleave', onLeave)
-    })
+    visuals.forEach((v) => createHandlers(v))
 
     return () => {
       visuals.forEach((v) => {
-        v.removeEventListener('mousemove', (e) => onMove(e, v))
-        v.removeEventListener('mouseleave', onLeave)
+        const h = handlers.get(v)
+        if (h) {
+          v.removeEventListener('mousemove', h.onMove)
+          v.removeEventListener('mouseleave', h.onLeave)
+        }
       })
     }
   }, [])
@@ -103,7 +110,7 @@ function ProjectRow({ project, align, isWide, gradient, index }) {
     alignItems: isWide ? 'start' : 'center',
     paddingLeft: isRight ? '8%' : '0',
     paddingRight: isWide ? '5%' : '0',
-    position: 'relative' ,
+    position: 'relative',
   }
 
   const metaStyle = {
@@ -140,36 +147,35 @@ function ProjectRow({ project, align, isWide, gradient, index }) {
       <a
         href={`/projects?project=${project.slug}`}
         ref={visualParallax}
-        className="hoverable project-visual"
+        className="project-visual"
         style={{
           aspectRatio: isWide ? '16 / 9' : '4 / 5',
           overflow: 'hidden',
           border: '1px solid var(--border)',
           borderRadius: 4,
           position: 'relative',
-          cursor: 'none',
+          cursor: 'pointer',
           display: 'block',
           gridColumn: isWide ? '2' : 'auto',
         }}
         onMouseEnter={() => setHov(true)}
         onMouseLeave={() => setHov(false)}
       >
-        <div className="project-img" style={imageStyle}>
-          <div style={{
-            position: 'absolute', inset: 0,
-            background: `url(${project.coverImage}) center/cover`,
-            opacity: 0.7,
-          }} />
-          <div style={{
-            position: 'absolute', inset: 0,
-            background: 'repeating-linear-gradient(0deg, rgba(0,0,0,0.12) 0 1px, transparent 1px 4px)',
-          }} />
-          <div style={{
-            position: 'absolute', inset: 0,
-            background: hov ? 'rgba(200,240,96,0.04)' : 'transparent',
-            transition: 'background 0.4s',
-          }} />
-        </div>
+        <div className="project-img" style={imageStyle} />
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: `url(${project.coverImage}) center/cover`,
+          opacity: 0.7,
+        }} />
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: 'repeating-linear-gradient(0deg, rgba(0,0,0,0.12) 0 1px, transparent 1px 4px)',
+        }} />
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: hov ? 'rgba(200,240,96,0.04)' : 'transparent',
+          transition: 'background 0.4s',
+        }} />
       </a>
 
       <div
