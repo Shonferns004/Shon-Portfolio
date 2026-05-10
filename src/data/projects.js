@@ -46,6 +46,52 @@ export const projects = [
     ],
   },
   {
+    slug: 'only-bills',
+    title: 'ONLY BILLS',
+    category: 'Finance Tracker',
+    tags: ['React', 'Firebase'],
+    coverImage: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1400&q=80',
+    summary: 'A lightweight billing manager to track due dates, recurring invoices, and payment confirmations with realtime updates.',
+    detailedExplanation: [
+      'Only Bills focuses on one problem: helping freelancers and small teams stay ahead of revenue leakage caused by late or missed payments.',
+      'The product organizes invoices by status, due timeline, and customer history. A minimal layout keeps key actions fast: create invoice, mark paid, and follow up.',
+      'Realtime synchronization with Firebase enables instant updates across devices, while the data model is prepared for reminders, analytics, and accounting integrations.',
+    ],
+    highlights: [
+      'Integrated realtime sync for due status updates across devices.',
+      'Created clean invoice timelines with fast month and client filters.',
+      'Added notification-ready data structure for upcoming reminders.',
+    ],
+    gallery: [
+      'https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1400&q=80',
+    ],
+  },
+  {
+    slug: 'only-bills',
+    title: 'ONLY BILLS',
+    category: 'Finance Tracker',
+    tags: ['React', 'Firebase'],
+    coverImage: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1400&q=80',
+    summary: 'A lightweight billing manager to track due dates, recurring invoices, and payment confirmations with realtime updates.',
+    detailedExplanation: [
+      'Only Bills focuses on one problem: helping freelancers and small teams stay ahead of revenue leakage caused by late or missed payments.',
+      'The product organizes invoices by status, due timeline, and customer history. A minimal layout keeps key actions fast: create invoice, mark paid, and follow up.',
+      'Realtime synchronization with Firebase enables instant updates across devices, while the data model is prepared for reminders, analytics, and accounting integrations.',
+    ],
+    highlights: [
+      'Integrated realtime sync for due status updates across devices.',
+      'Created clean invoice timelines with fast month and client filters.',
+      'Added notification-ready data structure for upcoming reminders.',
+    ],
+    gallery: [
+      'https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1400&q=80',
+    ],
+  },
+  {
     slug: 'candreva',
     title: 'CANDREVA',
     category: 'Brand Website',

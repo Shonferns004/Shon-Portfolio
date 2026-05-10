@@ -35,7 +35,10 @@ export default function App() {
   useEffect(() => {
     const onPop = () => setPathname(window.location.pathname)
     window.addEventListener('popstate', onPop)
-    return () => window.removeEventListener('popstate', onPop)
+
+    return () => {
+      window.removeEventListener('popstate', onPop)
+    }
   }, [])
 
   const isProjectsPage = pathname === '/projects'
