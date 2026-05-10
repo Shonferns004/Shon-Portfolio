@@ -1,18 +1,20 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { useReveal, revealStyle, useScrollProgress } from './useReveal'
 import { useLenis } from '../context/LenisContext'
 
 const badges = ['Available', 'NDA Ready', 'On-time Delivery']
 const stack = ['React', 'Node.js', 'React Native', 'Supabase', 'Python', 'Express', 'MongoDB', 'TailwindCSS', 'HTML5']
+const cubeColors = ['#22c55e', '#4ade80', '#c8f060', '#10b981', '#34d399', '#6ee7b7']
 
 export default function Hero() {
-  const [pointer, setPointer] = useState({ x: 0, y: 0 })
+  const [popped, setPopped] = useState({})
   const r1 = useReveal(), r2 = useReveal(), r3 = useReveal(), r4 = useReveal()
   const r5 = useReveal(), r6 = useReveal()
   const scrollPb = useScrollProgress()
   const heroRef = useRef(null)
   const lenisRef = useLenis()
   const [scrollY, setScrollY] = useState(0)
+  const mouseRaf = useRef(null)
 
   useEffect(() => {
     const lenis = lenisRef?.current
@@ -22,36 +24,51 @@ export default function Hero() {
     return () => lenis.off('scroll', onScroll)
   }, [lenisRef])
 
-  const particleField = [
-    { x: 8, y: 18, size: 5, depth: 0.45 },
-    { x: 18, y: 72, size: 7, depth: 0.9 },
-    { x: 28, y: 36, size: 6, depth: 0.75 },
-    { x: 42, y: 22, size: 4, depth: 0.5 },
-    { x: 56, y: 80, size: 8, depth: 1.1 },
-    { x: 64, y: 48, size: 5, depth: 0.65 },
-    { x: 73, y: 14, size: 6, depth: 0.8 },
-    { x: 82, y: 64, size: 7, depth: 1.0 },
-    { x: 92, y: 34, size: 5, depth: 0.6 },
-  ]
+  const cubes = useMemo(() => {
+    const result = []
+    const cols = 14, rows = 10
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        result.push({
+          id: `${r}-${c}`,
+          x: (c / (cols - 1)) * 100,
+          y: (r / (rows - 1)) * 100,
+          color: cubeColors[Math.floor(Math.random() * cubeColors.length)],
+          rx: -12 + Math.random() * 24,
+          ry: -12 + Math.random() * 24,
+          size: 7 + Math.random() * 6,
+        })
+      }
+    }
+    return result
+  }, [])
+
+  const onMouseMove = useCallback((e) => {
+    if (mouseRaf.current) cancelAnimationFrame(mouseRaf.current)
+    mouseRaf.current = requestAnimationFrame(() => {
+      const rect = heroRef.current?.getBoundingClientRect()
+      if (!rect) return
+      const px = ((e.clientX - rect.left) / rect.width) * 100
+      const py = ((e.clientY - rect.top) / rect.height) * 100
+      const newPopped = {}
+      for (const cube of cubes) {
+        const dx = cube.x - px
+        const dy = cube.y - py
+        if (Math.sqrt(dx * dx + dy * dy) < 10) newPopped[cube.id] = true
+      }
+      setPopped(newPopped)
+    })
+  }, [cubes])
+
+  const onTouchMove = useCallback((e) => {
+    const touch = e.touches[0]
+    if (!touch) return
+    onMouseMove({ clientX: touch.clientX, clientY: touch.clientY })
+  }, [onMouseMove])
 
   const progress = scrollPb.getProgress()
   const heroFade = Math.max(0, 1 - progress * 1.5)
   const heroTranslate = -progress * 50
-
-  const onMouseMove = (event) => {
-    const rect = event.currentTarget.getBoundingClientRect()
-    const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2
-    const y = ((event.clientY - rect.top) / rect.height - 0.5) * 2
-    setPointer({ x, y })
-  }
-  const onTouchMove = (event) => {
-    const touch = event.touches[0]
-    if (!touch) return
-    const rect = event.currentTarget.getBoundingClientRect()
-    const x = ((touch.clientX - rect.left) / rect.width - 0.5) * 2
-    const y = ((touch.clientY - rect.top) / rect.height - 0.5) * 2
-    setPointer({ x, y })
-  }
 
   return (
     <section
@@ -78,22 +95,30 @@ export default function Hero() {
         transform: `translate(-50%, -50%) scale(${1 - progress * 0.2})`,
         opacity: 1 - progress * 1.5,
       }} />
-      <div className="hero-particles" aria-hidden>
-        {particleField.map((particle, index) => (
-          <span
-            key={`${particle.x}-${particle.y}-${index}`}
-            className="hero-particle"
-            style={{
-              left: `${particle.x}%`,
-              top: `${particle.y}%`,
-              width: particle.size,
-              height: particle.size,
-              transform: `translate3d(${pointer.x * particle.depth * 14}px, ${(pointer.y * particle.depth * 14) + scrollY * 0.05 * particle.depth}px, 0)`,
-              opacity: 1 - progress * 0.5,
-            }}
-          />
-        ))}
+
+      {/* Cubes */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0, perspective: '800px',
+      }}>
+        {cubes.map((cube) => {
+          const isPopped = !!popped[cube.id]
+          return (
+            <div key={cube.id} style={{
+              position: 'absolute', left: `${cube.x}%`, top: `${cube.y}%`,
+              width: cube.size, height: cube.size,
+              marginLeft: -cube.size / 2, marginTop: -cube.size / 2,
+              background: isPopped ? '#c8f060' : cube.color,
+              transform: `perspective(800px) rotateX(${cube.rx}deg) rotateY(${cube.ry}deg) scale(${isPopped ? 1.8 : 0}) translateZ(${isPopped ? 20 : -20}px)`,
+              opacity: isPopped ? 1 : 0.07,
+              transition: isPopped
+                ? 'transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s, background 0.2s'
+                : 'transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.4s, background 0.3s',
+              boxShadow: isPopped ? `0 0 12px ${cube.color}66` : 'none',
+            }} />
+          )
+        })}
       </div>
+
       <div style={{ position: 'relative', zIndex: 1, transform: `translateY(${-progress * 30}px)`, opacity: heroFade }}>
         <div ref={r1} style={{ ...tagStyle, ...revealStyle(0) }}>
           <span style={dotStyle} />

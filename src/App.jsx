@@ -1,6 +1,8 @@
 import './styles/globals.css'
 import { useEffect, useState } from 'react'
 import { LenisProvider } from './context/LenisContext'
+import SplashScreen from './components/SplashScreen'
+import AnimatedBg from './components/AnimatedBg'
 import Cursor from './components/Cursor'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -32,6 +34,7 @@ function HomePage() {
 
 export default function App() {
   const [pathname, setPathname] = useState(window.location.pathname)
+  const [splashDone, setSplashDone] = useState(false)
 
   useEffect(() => {
     const onPop = () => setPathname(window.location.pathname)
@@ -43,6 +46,8 @@ export default function App() {
 
   return (
     <LenisProvider>
+      {!splashDone && <SplashScreen onFinish={() => setSplashDone(true)} />}
+      <AnimatedBg />
       <Cursor />
       <Navbar isProjectsPage={isProjectsPage} />
       <main>
