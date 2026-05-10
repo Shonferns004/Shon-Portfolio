@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import { useReveal, revealStyle } from './useReveal'
+import { useState, useEffect, useRef } from 'react'
+import { useReveal, revealStyle, useScrollProgress } from './useReveal'
+import { useLenis } from '../context/LenisContext'
 
 const badges = ['Available', 'NDA Ready', 'On-time Delivery']
 const stack = ['React', 'Node.js', 'React Native', 'Supabase', 'Python', 'Express', 'MongoDB', 'TailwindCSS', 'HTML5']
@@ -8,6 +9,18 @@ export default function Hero() {
   const [pointer, setPointer] = useState({ x: 0, y: 0 })
   const r1 = useReveal(), r2 = useReveal(), r3 = useReveal(), r4 = useReveal()
   const r5 = useReveal(), r6 = useReveal()
+  const scrollPb = useScrollProgress()
+  const heroRef = useRef(null)
+  const lenisRef = useLenis()
+  const [scrollY, setScrollY] = useState(0)
+
+  useEffect(() => {
+    const lenis = lenisRef?.current
+    if (!lenis) return
+    const onScroll = () => setScrollY(window.scrollY)
+    lenis.on('scroll', onScroll)
+    return () => lenis.off('scroll', onScroll)
+  }, [lenisRef])
 
   const particleField = [
     { x: 8, y: 18, size: 5, depth: 0.45 },
@@ -20,6 +33,10 @@ export default function Hero() {
     { x: 82, y: 64, size: 7, depth: 1.0 },
     { x: 92, y: 34, size: 5, depth: 0.6 },
   ]
+
+  const progress = scrollPb.getProgress()
+  const heroFade = Math.max(0, 1 - progress * 1.5)
+  const heroTranslate = -progress * 50
 
   const onMouseMove = (event) => {
     const rect = event.currentTarget.getBoundingClientRect()
@@ -37,9 +54,30 @@ export default function Hero() {
   }
 
   return (
-    <section id="hero" className="hero-section" style={heroStyle} onMouseMove={onMouseMove} onTouchStart={onTouchMove} onTouchMove={onTouchMove}>
-      <div style={gridBg} />
-      <div style={glowStyle} />
+    <section
+      id="hero"
+      className="hero-section"
+      ref={heroRef}
+      style={{
+        ...heroStyle,
+        transform: `translateY(${heroTranslate}px)`,
+        opacity: heroFade,
+        transition: progress > 0 ? 'none' : 'opacity 0.5s, transform 0.5s',
+      }}
+      onMouseMove={onMouseMove}
+      onTouchStart={onTouchMove}
+      onTouchMove={onTouchMove}
+    >
+      <div style={{
+        ...gridBg,
+        transform: `translateY(${-progress * 30}px)`,
+        opacity: 0.15 * (1 - progress * 0.5),
+      }} />
+      <div style={{
+        ...glowStyle,
+        transform: `translate(-50%, -50%) scale(${1 - progress * 0.2})`,
+        opacity: 1 - progress * 1.5,
+      }} />
       <div className="hero-particles" aria-hidden>
         {particleField.map((particle, index) => (
           <span
@@ -50,12 +88,13 @@ export default function Hero() {
               top: `${particle.y}%`,
               width: particle.size,
               height: particle.size,
-              transform: `translate3d(${pointer.x * particle.depth * 14}px, ${pointer.y * particle.depth * 14}px, 0)`,
+              transform: `translate3d(${pointer.x * particle.depth * 14}px, ${(pointer.y * particle.depth * 14) + scrollY * 0.05 * particle.depth}px, 0)`,
+              opacity: 1 - progress * 0.5,
             }}
           />
         ))}
       </div>
-      <div style={{ position: 'relative', zIndex: 1 }}>
+      <div style={{ position: 'relative', zIndex: 1, transform: `translateY(${-progress * 30}px)`, opacity: heroFade }}>
         <div ref={r1} style={{ ...tagStyle, ...revealStyle(0) }}>
           <span style={dotStyle} />
           Available for new projects
@@ -73,7 +112,7 @@ export default function Hero() {
           I love creating captivating and functional interfaces that evoke emotions and establish a connection between brand and user.
         </p>
       </div>
-      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'flex-end' }}>
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'flex-end', transform: `translateY(${-progress * 40}px)`, opacity: heroFade }}>
         <div ref={r5} style={{ ...revealStyle(100), ...cardStyle }}>
           <div style={cardLabel}>Status</div>
           <div style={cardValue}>Open to freelance & full-time roles</div>
@@ -127,20 +166,22 @@ const heroStyle = {
   gap: 60,
   position: 'relative',
   overflow: 'hidden',
+  willChange: 'transform, opacity',
 }
 const gridBg = {
   position: 'absolute', inset: 0,
   backgroundImage: 'linear-gradient(rgba(200,240,96,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(200,240,96,0.03) 1px, transparent 1px)',
   backgroundSize: '60px 60px',
   pointerEvents: 'none',
+  willChange: 'transform, opacity',
 }
 const glowStyle = {
   position: 'absolute',
   width: 600, height: 600,
   background: 'radial-gradient(circle, rgba(200,240,96,0.06) 0%, transparent 70%)',
   top: '50%', left: '30%',
-  transform: 'translate(-50%, -50%)',
   pointerEvents: 'none',
+  willChange: 'transform, opacity',
 }
 const tagStyle = {
   display: 'inline-flex', alignItems: 'center', gap: 8,

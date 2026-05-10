@@ -1,5 +1,6 @@
 import './styles/globals.css'
 import { useEffect, useState } from 'react'
+import { LenisProvider } from './context/LenisContext'
 import Cursor from './components/Cursor'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -35,16 +36,13 @@ export default function App() {
   useEffect(() => {
     const onPop = () => setPathname(window.location.pathname)
     window.addEventListener('popstate', onPop)
-
-    return () => {
-      window.removeEventListener('popstate', onPop)
-    }
+    return () => window.removeEventListener('popstate', onPop)
   }, [])
 
   const isProjectsPage = pathname === '/projects'
 
   return (
-    <>
+    <LenisProvider>
       <Cursor />
       <Navbar isProjectsPage={isProjectsPage} />
       <main>
@@ -58,6 +56,6 @@ export default function App() {
         )}
       </main>
       <Footer />
-    </>
+    </LenisProvider>
   )
 }

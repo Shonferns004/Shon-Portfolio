@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useReveal, revealStyle } from './useReveal'
+import { useState, forwardRef } from 'react'
+import { useReveal, revealStyle, useParallax } from './useReveal'
 
 const skills = ['React JS', 'React Native', 'Node.js', 'Express', 'Firebase', 'Python', 'Java', 'MongoDB', 'PostgreSQL', 'Figma']
 const stats = [{ num: '20+', label: 'Projects Completed' }, { num: '3+', label: 'Years Experience' }, { num: '15', label: 'Happy Clients' }]
@@ -10,12 +10,27 @@ export default function About() {
   const bodyRef = useReveal()
   const skillsRef = useReveal()
   const statsRef = useReveal()
-  const card1 = useReveal(), card2 = useReveal(), card3 = useReveal()
+  const card1 = useReveal(), card2 = useReveal()
   const btnRef = useReveal()
+  const parallaxNum = useParallax(0.5)
 
   return (
-    <section id="about" className="about-section" style={{ padding: '100px 48px', display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 80, alignItems: 'start' }}>
-      <div>
+    <section
+      id="about"
+      className="about-section"
+      style={{
+        padding: '100px 48px',
+        display: 'grid',
+        gridTemplateColumns: '1.2fr 0.8fr',
+        gap: 80,
+        alignItems: 'start',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      <div ref={parallaxNum} className="about-number">01</div>
+
+      <div style={{ position: 'relative', zIndex: 1 }}>
         <div ref={labelRef} style={revealStyle(0)} className="section-label">Who Am I</div>
         <h2 ref={headRef} style={{ ...revealStyle(80), fontFamily: 'var(--font-display)', fontSize: 'clamp(60px, 8vw, 100px)', lineHeight: 0.9, letterSpacing: '0.02em', color: 'var(--text)', marginBottom: 32 }}>
           App Dev /<br /><span style={{ color: 'var(--accent)' }}>Website Dev</span>
@@ -36,11 +51,10 @@ export default function About() {
         </div>
       </div>
 
-      <div style={{ paddingTop: 80 }}>
+      <div style={{ position: 'relative', zIndex: 1, paddingTop: 80 }}>
         {[
           { label: 'Location', value: 'Mumbai', ref: card1 },
           { label: 'Email', value: 'shawnferns004@gmail.com', ref: card2, small: true },
-          // { label: 'Worldwide clients in', value: '15 Countries', ref: card3 },
         ].map((c) => (
           <div key={c.label} ref={c.ref} style={{ ...revealStyle(0), border: '1px solid var(--border)', background: 'var(--bg2)', padding: 28, marginBottom: 16 }}>
             <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--muted)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>{c.label}</div>
@@ -74,7 +88,6 @@ function SkillChip({ children }) {
   )
 }
 
-import { forwardRef } from 'react'
 const ResumeBtn = forwardRef((_, ref) => {
   const [hov, setHov] = useState(false)
   return (

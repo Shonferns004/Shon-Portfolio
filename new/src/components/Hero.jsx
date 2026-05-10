@@ -220,10 +220,6 @@ export default function Hero({ lenisRef }) {
         </div>
       </div>
 
-      <div className="hero-scroll-progress">
-        <div className="hero-scroll-fill" />
-      </div>
-
       <div className="hero-marquee">
         <div className="marquee-track">
           {words.concat(words).map((w, i) => (
